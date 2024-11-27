@@ -1,21 +1,16 @@
 package main
 
-import (
-	"fmt"
-	"time"
-)
+import "fmt"
 
-// main thread
 func main() {
-	//each sub task here use 2kb in memory
-	go counter(5) //two thread
-	go counter(5) //three thread
-	counter(5)    // run at main thread
-}
+	channel := make(chan int)
 
-func counter(count int) {
-	for i := range count {
-		fmt.Println(i)
-		time.Sleep(time.Second)
-	}
+	//t2
+	go func() {
+		channel <- 1 + 1 // <- add new value to channel
+	}()
+
+	//t1
+	fmt.Println(<-channel) // empty the value channel
+	//A thread talk another thread with channels
 }
